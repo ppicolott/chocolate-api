@@ -1,4 +1,4 @@
-package com.github.ppicolott.chocolate.api.app;
+package com.github.ppicolott.chocolate.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+//@EntityScan(basePackages = {"br.com.yaman.notification.hub.api.entity"})
+//@EnableJpaRepositories(basePackages = {"br.com.yaman.notification.hub.api.repository"})
 @ComponentScan
 @EntityScan
 @EnableJpaRepositories
