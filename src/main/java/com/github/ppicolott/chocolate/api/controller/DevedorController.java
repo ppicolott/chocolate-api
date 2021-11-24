@@ -64,11 +64,11 @@ public class DevedorController {
 	)
 	@GetMapping(value = "/buscar/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<DevedorEntity> findById(@PathVariable(name = "uuid", required = true) String uuid){
+	public ResponseEntity<Optional<DevedorEntity>> findById(@PathVariable(name = "uuid", required = true) String uuid){
 
-		DevedorEntity devedor = new DevedorEntity();
+		Optional<DevedorEntity> devedor = Optional.ofNullable(new DevedorEntity());
 		
-		devedor = this.devedorRepository.findDevedorById(StringUtils.normalizeSpace(uuid));
+		devedor = this.devedorRepository.findById(StringUtils.normalizeSpace(uuid));
 		
 		LOGGER.info("LOG DE EXEMPLO");
 		return ResponseEntity.ok().body(devedor);
@@ -108,7 +108,7 @@ public class DevedorController {
 		
 		if(uuidRev!=null) {
 			devedor = this.devedorRepository.findById(uuidRev);
-			this.devedorRepository.deleteById(uuidRev);		
+			this.devedorRepository.deleteById(uuidRev);
 		}else {
 			//Nothing
 		}
@@ -124,16 +124,25 @@ public class DevedorController {
 	)
 	@PutMapping(value = "/chocolate/somar/{uuid}/{qtd}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
+	
 	public ResponseEntity<DevedorEntity> chocolateAdd(
 			@PathVariable(name = "uuid", required = true) String uuid,
 			@PathVariable(name = "qtd", required = true) Integer qtd
 			){
 
+		String uuidRev = StringUtils.normalizeSpace(uuid);
+		DevedorEntity devedor = new DevedorEntity();
 		
-		
+		if(uuidRev!=null) {
+			devedor = this.devedorRepository.findById(uuidRev).get();
+            devedor.setQtd(qtd);
+            this.devedorRepository.save(devedor);
+		}else {
+			//Nothing
+		}
 		
 		LOGGER.info("LOG DE EXEMPLO");
-		return ResponseEntity.ok().body(null);
+		return ResponseEntity.ok().body(devedor);
 	}
-
+	
 }
